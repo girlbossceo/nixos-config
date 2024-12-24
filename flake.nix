@@ -1,3 +1,5 @@
+# vim:tabstop=2:shiftwidth=2
+
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

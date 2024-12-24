@@ -1,3 +1,5 @@
+# vim:tabstop=2:shiftwidth=2
+
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -170,14 +172,14 @@
       global = { gpgsign = true; };
       user = {
         name = "June Clementine Strawberry";
-	email = "strawberry@puppygock.gay";
-	signingkey = "~/.ssh/id_ed25519";
+        email = "strawberry@puppygock.gay";
+        signingkey = "~/.ssh/id_ed25519";
       };
       core = { compression = 9; };
       alias = {
         # i use this for conduwuit so i can push to all my mirrors easily
         pushall = "!git remote | grep -E 'origin' | xargs -L1 -P 0 git push";
-	fetchall = "!git remote | grep -E 'origin' | xargs -L1 -P 0 git fetch";
+        fetchall = "!git remote | grep -E 'origin' | xargs -L1 -P 0 git fetch";
       };
 
       # no meme gpg pls
@@ -224,7 +226,7 @@
         "https://cache.nixos.org/"
       ];
       trusted-public-keys = [
-      	"cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+        "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
         "conduwuit:BbycGUgTISsltcmH0qNjFR9dbrQNYgdIAcmViSGoVTE="
         "conduwuit.cachix.org-1:MFRm6jcnfTf0jSAbmvLfhO3KBMt4px+1xaereWXp8Xg="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
