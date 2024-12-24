@@ -28,6 +28,21 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # none of the nixos default NTP servers support NTS, so overriding them all is intended
+  # also this list is pretty arbitrary, but it's from a random selection of servers at
+  # <https://github.com/jauderho/nts-servers>
+  #
+  # also i use minsources 3 to validate the time using 3 servers/sources, so i'd like at
+  # least double the servers just in case i have 2 bad ones.
+  networking.timeServers = [
+    "ntppool1.time.nl"
+    "nts.netnod.se"
+    "ptbtime1.ptb.de"
+    "ohio.time.system76.com"
+    "time.txryan.com"
+    "time.dfm.dk"
+  ];
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -75,6 +90,44 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+
+  # use chronyd for time instead of systemd-timesyncd because of NTS support for
+  # fully authenticated and encrypted time synchronisation, unlike NTP.
+  services.chrony = {
+    enable = true;
+    enableNTS = true;
+    # reduces latency caused by memory fragmentation
+    enableMemoryLocking = true;
+
+    extraFlags = [
+      # enables the highest level of the built-in syscall filter on chronyd for security
+      "-F1"
+    ];
+
+    extraConfig = ''
+      # <https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus1000/sw/4_0/qos/configuration/guide/nexus1000v_qos/qos_6dscp_val.pdf>
+      # <https://wikipedia.org/wiki/Differentiated_services>
+      #
+      # Service class: 46 == EF (Expedited Forwarding / High Priority, Low Latency)
+      dscp 46
+
+      # disables listening on a control/cmd port for chronyc, because i dont use it
+      cmdport 0
+
+      # disables bypassing certificate time checks. requires having a functioning RTC.
+      nocerttimecheck 0
+
+      # enforce/require time requests to be authenticated aka use NTS only and disallow plaintext NTP,
+      # and disallow all fallback to plaintext NTP.
+      authselectmode require
+
+      # requires at least 3 servers/sources provide us with a valid time before trusting/applying it
+      #
+      # when using NTS; this greatly reduces risk of malicious time-based attacks such as being
+      # fed wrong/bad timestamps to bypass certificate expiry, clock skew fingerprinting, etc
+      minsources 3
+    '';
+  };
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -300,6 +353,9 @@
     awscli2
     slack
     slackdump
+    killall
+    jq
+    bitwarden-cli
   ];
 
   programs.zsh = {
@@ -347,7 +403,7 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
+  # Enable the OpenSSH daemon. because sometimes i like to ssh from my mac/desktop.
   services.openssh = {
     enable = true;
 
