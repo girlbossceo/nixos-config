@@ -50,37 +50,6 @@
       ];
     };
 
-  fileSystems."/nix/store" =
-    { device = "/dev/disk/by-uuid/a24c5ca6-aa90-4985-b598-28dd07b5f12e";
-      fsType = "ext4";
-      options = [
-        # bind mount because this is under / already
-        "bind"
-        # /nix/store is I/O heavy and doesn't need access times
-        "noatime"
-        # nix default
-        "ro"
-        # asynchronously flushes commit blocks to disk without waiting for descriptor block to be written.
-        # improves i/o perf
-        #
-        # must use data=writeback or data=journal
-        #
-        # this will prevent this drive being mounted on ancient kernels.
-        "journal_async_commit"
-        # highest safety guarantees, and theoretically higher throughput
-        "data=writeback"
-        # im on a laptop so 5 -> 15 second commit is fine
-        "commit=15"
-        # forcefully fsync()'s file replacements if not done by the bad application
-        "auto_da_alloc"
-        # 64-bit inode version support
-        "i_version"
-        # journal checksumming for e2fsck recovery support
-        # internally enabled if using journal_async_commit
-        "journal_checksum"
-      ];
-    };
-
   boot.initrd.luks.devices."luks-9cff8e4d-0e9e-48a4-8dd4-1b48f68c2e19" = {
     device = "/dev/disk/by-uuid/9cff8e4d-0e9e-48a4-8dd4-1b48f68c2e19";
 
@@ -157,8 +126,7 @@
   # i want all my firmware and microcode pls
   hardware.enableAllFirmware = true;
 
-  # i kinda question if this works because i don't see amd-ucode in /boot, but
-  # even nixos-hardware uses this so........
+  # dmesg | grep -i microcode
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
