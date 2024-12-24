@@ -298,6 +298,8 @@
     libtool
     gnumake
     awscli2
+    slack
+    slackdump
   ];
 
   programs.zsh = {
