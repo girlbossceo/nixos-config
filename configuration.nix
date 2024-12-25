@@ -251,6 +251,11 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Allow insecure libolm, used by gomuks
+  nixpkgs.config.permittedInsecurePackages = [
+    "olm-3.2.16"
+  ];
+
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
@@ -356,6 +361,8 @@
     killall
     jq
     bitwarden-cli
+    ffmpeg-full
+    olm
   ];
 
   programs.zsh = {
