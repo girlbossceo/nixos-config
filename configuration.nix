@@ -210,6 +210,67 @@
     ];
   };
 
+  programs.htop = {
+    enable = true;
+    settings = {
+fields="48 105 107 110 104 106 109 11 9 41 40 42 38 39 47 46 121 2 37 14 13 50 18 114 17 3 0 123 1";
+hide_kernel_threads = false;
+hide_userland_threads = false;
+hide_running_in_container = false;
+shadow_other_users = false;
+show_thread_names = true;
+show_program_path = false;
+highlight_base_name = true;
+highlight_deleted_exe = true;
+shadow_distribution_path_prefix = false;
+highlight_megabytes = true;
+highlight_threads = true;
+highlight_changes = true;
+highlight_changes_delay_secs = true;
+find_comm_in_cmdline = true;
+strip_exe_from_cmdline = true;
+show_merged_command = true;
+header_margin = false;
+screen_tabs = false;
+detailed_cpu_time = true;
+cpu_count_from_one = false;
+show_cpu_usage = true;
+show_cpu_frequency = true;
+show_cpu_temperature = true;
+degree_fahrenheit = false;
+update_process_names = false;
+account_guest_in_cpu_meter = false;
+color_scheme=6;
+enable_mouse = true;
+delay = 18;
+hide_function_bar = false;
+header_layout="four_25_25_25_25";
+column_meters_0="DiskIO NetworkIO";
+column_meter_modes_0 ="1 1";
+column_meters_1="AllCPUs2";
+column_meter_modes_1 = 1;
+column_meters_2="Memory Swap";
+column_meter_modes_2 ="1 1";
+column_meters_3="LoadAverage Tasks";
+column_meter_modes_3 ="1 2";
+tree_view = false;
+sort_key=46;
+tree_sort_key=3;
+sort_direction=-1;
+tree_sort_direction = true;
+tree_view_always_by_pid = true;
+all_branches_collapsed = false;
+"screen:Main" = "USER SYSCW WBYTES IO_WRITE_RATE SYSCR RBYTES IO_READ_RATE MAJFLT MINFLT M_TRS M_SHARE M_DRS M_VIRT M_RESIDENT PERCENT_MEM PERCENT_CPU CTXT STATE PROCESSOR STIME UTIME NLWP NICE IO_PRIORITY PRIORITY PPID PID COMM Command";
+".sort_key"="PERCENT_CPU";
+".tree_sort_key"="PPID";
+".tree_view_always_by_pid"=1;
+".tree_view"=0;
+".sort_direction"=-1;
+".tree_sort_direction"=1;
+".all_branches_collapsed"=0;
+    };
+  };
+
   # Install firefox.
   programs.firefox.enable = true;
 
@@ -306,7 +367,6 @@
     moreutils
     git
     pv
-    htop
     nvme-cli
     smartmontools
     vscode
