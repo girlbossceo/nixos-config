@@ -18,9 +18,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelParams = [
-    "acpi_backlight=native"
-  ];
+  #boot.kernelParams = [
+  #  "acpi_backlight=video"
+  #];
 
   networking.hostName = "strawberry"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -85,6 +85,10 @@
   ];
   services.fwupd.enable = true;
   services.fstrim.enable = true;
+
+  services.power-profiles-daemon.enable = false;
+  services.thermald.enable = true;
+  services.tlp.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -157,7 +161,6 @@
         "bluez5.roles" = [ "hsp_hs" "hsp_ag" "hfp_hf" "hfp_ag" ];
     };
   };
-
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
