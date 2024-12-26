@@ -18,9 +18,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  #boot.kernelParams = [
-  #  "acpi_backlight=video"
-  #];
+  boot.kernelParams = [
+    "nowatchdog"
+    "pcie_aspm=force"
+    "amd_iommu=force_enable"
+    "iommu.forcedac=1"
+  ];
+
+  boot.kernel.sysctl."kernel.nmi_watchdog" = 0;
 
   networking.hostName = "strawberry"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -86,9 +91,20 @@
   services.fwupd.enable = true;
   services.fstrim.enable = true;
 
+  # enable fingerprint support
+  services.fprintd.enable = true;
+  services.fprintd.package = pkgs.fprintd-tod;
+  #services.fprintd.tod.enable = true;
+  #services.fprintd.tod.driver = pkgs.libfprint-tod;
+
+
   services.power-profiles-daemon.enable = false;
   services.thermald.enable = true;
   services.tlp.enable = true;
+  services.tlp.settings = {
+    RUNTIME_PM_ON_AC="auto";
+  };
+  services.irqbalance.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -433,6 +449,9 @@ all_branches_collapsed = false;
     bind # for dig
     wireshark
     attic-client
+    pciutils
+    usbutils
+    lshw
   ];
 
   programs.zsh = {
@@ -535,8 +554,12 @@ all_branches_collapsed = false;
     { domain = "@audio"; item = "nofile" ; type = "hard"; value = "99999999" ; }
   ];
   services.udev.extraRules = ''
+    # realtime audio stuff
     KERNEL=="rtc0", GROUP="audio"
     KERNEL=="hpet", GROUP="audio"
+
+    # Allow <5% brightness to persist on reboot (disable clamped value of 5%)
+    SUBSYSTEM=="backlight", ENV{ID_BACKLIGHT_CLAMP}="0"
   '';
 
   # This value determines the NixOS release from which the default

@@ -28,6 +28,11 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.extraModprobeConfig = ''
     options thinkpad_acpi fan_control=1
+    options usbcore autosuspend=5
+    options snd_hda_intel enable_msi=1
+
+    blacklist iTCO_wdt
+    blacklist sp5100_tco
   '';
 
   fileSystems."/" =
