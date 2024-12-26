@@ -18,6 +18,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.kernelParams = [
+    "acpi_backlight=native"
+  ];
+
   networking.hostName = "strawberry"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -363,6 +367,9 @@
     bitwarden-cli
     ffmpeg-full
     olm
+    bind # for dig
+    wireshark
+    attic-client
   ];
 
   programs.zsh = {
