@@ -452,6 +452,9 @@ all_branches_collapsed = false;
     pciutils
     usbutils
     lshw
+    binwalk
+    rar
+    unrar
   ];
 
   programs.zsh = {
