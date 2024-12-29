@@ -37,6 +37,15 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # makes it annoying when i lose my wifi connection on suspend/sleep
+  networking.networkmanager.wifi.powersave = false;
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 22 80 443 ];
+    allowedUDPPorts = [ 80 443 ];
+  };
+
   # none of the nixos default NTP servers support NTS, so overriding them all is intended
   # also this list is pretty arbitrary, but it's from a random selection of servers at
   # <https://github.com/jauderho/nts-servers>
@@ -224,6 +233,13 @@
       "${GOPATH}/bin"
       "${XDG_BIN_HOME}"
     ];
+  };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
 
   programs.htop = {
