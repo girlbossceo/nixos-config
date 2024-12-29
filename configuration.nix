@@ -101,7 +101,7 @@
   services.fstrim.enable = true;
 
   # enable fingerprint support
-  services.fprintd.enable = true;
+  services.fprintd.enable = false;
   services.fprintd.package = pkgs.fprintd-tod;
   #services.fprintd.tod.enable = true;
   #services.fprintd.tod.driver = pkgs.libfprint-tod;
@@ -471,6 +471,8 @@ all_branches_collapsed = false;
     binwalk
     rar
     unrar
+    yubioath-flutter
+    yubikey-agent
   ];
 
   programs.zsh = {
@@ -562,7 +564,12 @@ all_branches_collapsed = false;
   nix.settings.allowed-users = [ "@wheel" ];
   security.sudo.execWheelOnly = true;
 
-  services.udev.packages = [ pkgs.android-udev-rules ];
+  services.pcscd.enable = true;
+
+  services.udev.packages = [
+    pkgs.android-udev-rules
+    pkgs.yubikey-personalization
+  ];
 
   # when can we get a realtime-privileges package in nixos so i aint gotta do allat
   security.pam.loginLimits = [
