@@ -2,7 +2,7 @@
 
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-stable";
   };
   outputs = inputs@{ self, nixpkgs, ... }: {
     nixosConfigurations.strawberry = nixpkgs.lib.nixosSystem {
